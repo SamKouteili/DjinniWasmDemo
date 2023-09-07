@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MyClass Test</title>
+</head>
+<body>
+    <script src="MathUtilsNative.js"></script>
+    <script>
+        Module.onRuntimeInitialized = function() {
+            var instance = new Module.MathUtils(3);
+            console.log("successfully instantiated");
+            console.log(Module.MathUtils.addFff64(10, 8));
+            // instance.incrementX();
+            // console.log(instance.x); // 11
+            // instance.x = 20;
+            // console.log(instance.x); // 20
+            // console.log(Module.MyClass.getStringFromInstance(instance)); // "hello"
+            instance.delete();
+        };
+    </script>
+</body>
+</html>

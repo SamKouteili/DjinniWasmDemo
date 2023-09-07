@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MyClass Test</title>
+</head>
+<body>
+    <script src="MathUtils.js"></script>
+    <script>
+            // Module.onRuntimeInitialized = function() {
+            //     let instance = new MathUtils.MathUtils();  // assuming the binding exposes a constructor
+            //     let result = instance.add_fff64(3.2, 4.8);
+            //     console.log("The result is:", result);
+            // };
+            Module().then(module => {
+                if (typeof module.addFff64 === 'function') {
+                    // The addFff64 method exists in the module.
+                    console.log('addFff64 is a function in the module');
+                    
+                    // You can call the method here if needed:
+                    const result = module.addFff64(1.0, 2.0);
+                    console.log('Result:', result);
+                } else {
+                    // The addFff64 method does not exist in the module.
+                    console.log('addFff64 is not a function in the module');
+                }
+      })
+    </script>
+</body>
+</html>
