@@ -1,3 +1,4 @@
 MathUtils = interface +c {
     add_fff64(a: f64, b: f64): f64;
+    static create_math_utils(): MathUtils;
 }

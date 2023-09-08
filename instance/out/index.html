@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Instantiated MathUtils.addFff64</title>
+</head>
+<body>
+    <script src="MathUtils.js"></script>
+    <script>
+            Module().then(module => {
+                console.log("typeof module: ", typeof module);
+                console.log("typeof module.MathUtils: ", typeof module.MathUtils);
+                const mathUtilsInstance = new module.MathUtils.createMathUtils(); // Use 'new' to create an instance
+                console.log("mathUtilsInstance: ". mathUtilsInstance);
+
+                if (typeof module.MathUtils.addFff64 === 'function') {
+                    // The addFff64 method exists in the module.
+                    console.log('addFff64 is a function in the module');
+                    console.log("mathUtilsInstance.addFff64(2,3)=", mathUtilsInstance.addFff64(2, 3));
+                } else {
+                    // The addFff64 method does not exist in the module.
+                    console.log('addFff64 is not a function in the module');
+                }
+                
+      })
+    </script>
+</body>
+</html>

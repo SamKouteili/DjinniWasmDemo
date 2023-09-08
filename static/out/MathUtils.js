@@ -2397,6 +2397,7 @@ function djinni_register_name_in_ns(prefixedName,namespacedName) { prefixedName 
       return newFunc(Function, args1).apply(null, args2);
     }
   
+  
   var heap32VectorToArray = (count, firstElement) => {
       var array = [];
       for (var i = 0; i < count; i++) {
@@ -2406,6 +2407,74 @@ function djinni_register_name_in_ns(prefixedName,namespacedName) { prefixedName 
       }
       return array;
     };
+  
+  
+  
+  
+  var __embind_register_class_class_function = (rawClassType,
+                                            methodName,
+                                            argCount,
+                                            rawArgTypesAddr,
+                                            invokerSignature,
+                                            rawInvoker,
+                                            fn,
+                                            isAsync) => {
+      var rawArgTypes = heap32VectorToArray(argCount, rawArgTypesAddr);
+      methodName = readLatin1String(methodName);
+      rawInvoker = embind__requireFunction(invokerSignature, rawInvoker);
+      whenDependentTypesAreResolved([], [rawClassType], function(classType) {
+        classType = classType[0];
+        var humanName = `${classType.name}.${methodName}`;
+  
+        function unboundTypesHandler() {
+          throwUnboundTypeError(`Cannot call ${humanName} due to unbound types`, rawArgTypes);
+        }
+  
+        if (methodName.startsWith("@@")) {
+          methodName = Symbol[methodName.substring(2)];
+        }
+  
+        var proto = classType.registeredClass.constructor;
+        if (undefined === proto[methodName]) {
+          // This is the first function to be registered with this name.
+          unboundTypesHandler.argCount = argCount-1;
+          proto[methodName] = unboundTypesHandler;
+        } else {
+          // There was an existing function with the same name registered. Set up
+          // a function overload routing table.
+          ensureOverloadTable(proto, methodName, humanName);
+          proto[methodName].overloadTable[argCount-1] = unboundTypesHandler;
+        }
+  
+        whenDependentTypesAreResolved([], rawArgTypes, function(argTypes) {
+          // Replace the initial unbound-types-handler stub with the proper
+          // function. If multiple overloads are registered, the function handlers
+          // go into an overload table.
+          var invokerArgsArray = [argTypes[0] /* return value */, null /* no class 'this'*/].concat(argTypes.slice(1) /* actual params */);
+          var func = craftInvokerFunction(humanName, invokerArgsArray, null /* no class 'this'*/, rawInvoker, fn, isAsync);
+          if (undefined === proto[methodName].overloadTable) {
+            func.argCount = argCount-1;
+            proto[methodName] = func;
+          } else {
+            proto[methodName].overloadTable[argCount-1] = func;
+          }
+  
+          if (classType.registeredClass.__derivedClasses) {
+            for (const derivedClass of classType.registeredClass.__derivedClasses) {
+              if (!derivedClass.constructor.hasOwnProperty(methodName)) {
+                // TODO: Add support for overloads
+                derivedClass.constructor[methodName] = func;
+              }
+            }
+          }
+  
+          return [];
+        });
+        return [];
+      });
+    };
+
+  
   
   
   
@@ -3498,6 +3567,7 @@ var wasmImports = {
   _embind_register_bigint: __embind_register_bigint,
   _embind_register_bool: __embind_register_bool,
   _embind_register_class: __embind_register_class,
+  _embind_register_class_class_function: __embind_register_class_class_function,
   _embind_register_class_function: __embind_register_class_function,
   _embind_register_emval: __embind_register_emval,
   _embind_register_float: __embind_register_float,
@@ -3547,8 +3617,8 @@ var stackAlloc = createExportWrapper('stackAlloc');
 var _emscripten_stack_get_current = () => (_emscripten_stack_get_current = wasmExports['emscripten_stack_get_current'])();
 var ___cxa_is_pointer_type = createExportWrapper('__cxa_is_pointer_type');
 var dynCall_jiji = Module['dynCall_jiji'] = createExportWrapper('dynCall_jiji');
-var ___start_em_js = Module['___start_em_js'] = 70308;
-var ___stop_em_js = Module['___stop_em_js'] = 72327;
+var ___start_em_js = Module['___start_em_js'] = 70292;
+var ___stop_em_js = Module['___stop_em_js'] = 72311;
 
 // include: postamble.js
 // === Auto-generated postamble setup entry stuff ===

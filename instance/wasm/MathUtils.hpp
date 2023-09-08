@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "/Users/sam/2djinni-test/src/MathUtils.hpp"
+#include "/Users/sam/2djinni-test/instance/src/MathUtils.hpp"
 #include "/Users/sam/snap.djinni/support-lib/wasm/djinni_wasm.hpp"
 
 namespace djinni_generated {
@@ -24,6 +24,7 @@ struct MathUtils : ::djinni::JsInterface<::MathUtils, MathUtils> {
     static em::val cppProxyMethods();
 
     static double add_fff64(const CppType& self, double w_a,double w_b);
+    static em::val create_math_utils();
 
 };
 

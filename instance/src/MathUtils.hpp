@@ -3,9 +3,13 @@
 
 #pragma once
 
+#include <memory>
+
 class MathUtils {
 public:
     virtual ~MathUtils() = default;
 
     virtual double add_fff64(double a, double b) = 0;
+
+    static /*not-null*/ std::shared_ptr<MathUtils> create_math_utils();
 };
