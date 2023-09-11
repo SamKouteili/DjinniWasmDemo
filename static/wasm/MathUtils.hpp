@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "/Users/sam/2djinni-test/static/src/MathUtils.hpp"
+#include "/Users/sam/DjinniWasmDemo/static/src/MathUtils.hpp"
 #include "/Users/sam/snap.djinni/support-lib/wasm/djinni_wasm.hpp"
 
 namespace djinni_generated {
