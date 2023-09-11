@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Static MathUtils.addFff64</title>
+</head>
+<body>
+    <script src="MathUtils.js"></script>
+    <script>
+        var instance = Module();  // Create an instance of your module
+        console.log("typeof instance:", typeof instance);
+        console.log(instance);
+        console.log("typeof instance.MathUtils:", typeof instance.MathUtils);
+        if (typeof instance.MathUtils.addFff64 === 'function') {
+            // The addFff64 method exists in the instance.
+            console.log('addFff64 is a function in the instance');
+            console.log('instance.MathUtils.addFff64=', instance.MathUtils.addFff64(1.0, 2.0));
+        } else {
+            // The addFff64 method does not exist in the instance.
+            console.log('addFff64 is not a function in the instance');
+        }
+    </script>
+</body>
+</html>
